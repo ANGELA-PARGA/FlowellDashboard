@@ -1,0 +1,16 @@
+.dashboard_container{
+    display: grid;
+    grid-template-columns: 1fr 11fr;
+    height: 100svh;
+
+}
+
+.dashboard_info{
+    padding: 50px 10px 50px 20px
+}
+
+@media (max-width: 600px) {
+    .dashboard_container{
+        grid-template-columns: 1fr 15fr;
+    }
+}
