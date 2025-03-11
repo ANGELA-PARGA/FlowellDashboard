@@ -1,8 +1,8 @@
 import { fetchUserInformation } from "@/lib/fetchingRequests";
 import { fetchUserOrders } from "@/lib/fetchingRequests";
-import CustomerInfo from "@/components/customers/CustomerInfo";
-import CustomerOrders from "@/components/customers/CustomerOrders";
-import styles from './page.module.css'
+import CustomerInfo from "@/components/presentation/CustomerInfo";
+import CustomerOrders from "@/components/presentation/CustomerOrders";
+import styles from '../../page.module.css'
 
 
 export default async function CustomerDetails(props) {

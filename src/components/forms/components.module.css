@@ -1,0 +1,65 @@
+.updates_form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input_container, .buttons_container{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.input_container label{
+    font-size: 0.825rem;
+    color: #c9ced8;
+}
+
+.input_container input{
+    flex: 1 1 70%;
+    padding: 0.5rem;
+    width: 50%;
+}
+
+.input_container input:focus{
+    background-color: #059beb18;
+}
+
+.labels_container{
+    flex: 0 0 30%;
+}
+
+.buttons_container button{
+    width: fit-content;
+    padding: 0.5rem;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+.cancel_update_button{
+    background-color: red;
+}
+
+.cancel_update_button:hover{
+    background-color: rgb(248, 33, 33);
+}
+
+.update_button:hover{
+    background-color: grey;
+}
+
+.error_updating_info{
+    font-size: 0.7rem;
+    color: red;
+}
+
+/*datepicker styles*/
+.datePicker_container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+

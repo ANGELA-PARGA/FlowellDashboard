@@ -9,7 +9,7 @@ import debounce from "lodash.debounce";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 
-export const SearchForm = () => {
+export const SearchForm = ({type}) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace, prefetch } = useRouter();
@@ -45,7 +45,7 @@ export const SearchForm = () => {
 
     return (
         <form className={styles.searchForm_container}>
-            <label htmlFor="search">Search customer </label>
+            <label htmlFor="search">Search {type}</label>
             <input
                 type="text"
                 placeholder="Search..."

@@ -8,6 +8,7 @@ export default async function CustomerOrders({orders}) {
             { orders && orders.length > 0 ? (
                 <>
                 <h1>Customer&apos;s History Orders</h1>
+                <div className={styles.table_container}>
                 <table className={styles.orders_table}>
                     <thead>
                         <tr>
@@ -33,7 +34,8 @@ export default async function CustomerOrders({orders}) {
                         </tr>
                     ))}
                     </tbody>
-                </table> 
+                    </table>
+                </div> 
                 </>               
                 ) :(
                     <>

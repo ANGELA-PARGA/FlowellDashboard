@@ -4,16 +4,29 @@
     align-items: space-between;  
 }
 
+.side_nav, .side_nav_phone{
+    position: fixed;
+    top: 0;
+    width: 125px;
+    z-index: 1000;
+}
+
+.side_nav_phone{
+    display: none;
+    width: 60px;
+}
+
 .nav_links{
     gap: 1rem;
 }
 
-.side_nav{
+.side_nav, .side_nav_phone{
     gap: 3rem;
     padding-top: 50px;
     padding-left: 8px;
     padding-right: 8px;
     border-right: 0.3px solid #059beb49;
+    height: 100dvh
 }
 
 .nav_links li {
@@ -59,4 +72,15 @@
     font-size: 0.825rem;
     font-weight: bolder;
     text-align: center;    
+}
+
+@media (max-width: 600px) {
+    .side_nav{
+        display: none;
+    }  
+    .side_nav_phone{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    } 
 }
