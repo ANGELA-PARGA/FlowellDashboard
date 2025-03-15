@@ -1,14 +1,31 @@
-
 import styles from "./page.module.css";
+import OrdersChart from "@/components/dashboard/OrdersChart";
+import ProductsChart from "@/components/dashboard/ProductsChart";
+import SalesPerMonth from "@/components/dashboard/SalesPerMonth";
+import { fetchOrdersDashboardInfo } from "@/lib/fetchingRequests";
+import { fetchProductsDashboardInfo } from "@/lib/fetchingRequests";
 
-export default function AdminPanel() {
+export default async function AdminPanel() {
+  const [ordersResult, productsResult] = await Promise.all([
+    fetchOrdersDashboardInfo(),
+    fetchProductsDashboardInfo()
+  ]);
+
+  const { data: orders, expired: firstExpired } = ordersResult;
+  const { data: products, expired: secondExpired } = productsResult;
+
+  console.log('orders result',orders)
+
+  if (firstExpired || secondExpired) {
+    console.log('data is expired on CUSTOMERS server component')
+    /*return <MyModalLogin />;*/
+  } 
+
   return (
     <div className={styles.admin_panel}>
-        AQUI VA EL PANEL DE ADMINISTRACION DONDE SE MUESTRA INFORMACION
-        GENERAL DE INTERES COMO (NUMERO DE ORDENES EN EL SISTEMA, CUANTAS
-        ACTIVAS, CUANTAS ENTREGADAS, CUANTAS CANCELADAS, CUANTAS PENDIENTES)
-        NUMERO DE CLIENTES REGISTRADOS, NUMERO DE PRODUCTOS EN EL SISTEMA
-        Y UNA ALERTA SI HAY PRODUCTOS BAJOS DE INVENTARIO
+      <OrdersChart orderInfo={orders.orders}/>
+      <ProductsChart products={products.products}/>
+      <SalesPerMonth ordersByMonth={orders} />      
     </div>
   );
 }

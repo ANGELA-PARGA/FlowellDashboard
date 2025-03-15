@@ -7,8 +7,15 @@ import styles from '../../page.module.css'
 
 export default async function CustomerDetails(props) {
     const params = await props.params;
-    const {data: userInfo, expired: firstExpired} = await fetchUserInformation(params.id);
-    const {data: userOrders, expired: secondExpired} = await fetchUserOrders(params.id);
+
+    const[userInfoResults, userOrdersResults] = await Promise.all([
+        fetchUserInformation(params.id),
+        fetchUserOrders(params.id)
+    ])
+
+    const {data: userInfo, expired: firstExpired} = userInfoResults;
+    const {data: userOrders, expired: secondExpired} = userOrdersResults;
+    
     const user = userInfo.user
     const orders = userOrders.orders
 

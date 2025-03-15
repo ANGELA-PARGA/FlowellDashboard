@@ -28,7 +28,15 @@
     padding-left: 20px;    
 }
 
-@media (max-width: 600px) {
+/*admin panel styles*/
+.admin_panel{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 1.5rem;
+}
+
+@media (max-width: 650px) {
     .pagination_container{
         flex-direction: column;
         align-items: flex-start;
@@ -36,5 +44,8 @@
     }
     .dashboard_info{
         margin-left: 60px;
-    }    
+    }  
+    .admin_panel{
+        grid-template-columns: 1fr;
+    }  
 }

@@ -5,7 +5,6 @@ export default async function ProductDetails(props) {
     const params = await props.params;
     const {data, expired} = await fetchProductsById(params.id);
     const product = data.product_found
-    console.log('product', product)
 
     if (expired) {
         console.log('data is expired on CUSTOMERS server component')

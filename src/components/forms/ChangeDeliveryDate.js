@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; 
 import { addDays, addBusinessDays, getDay} from 'date-fns';
-/*import { updateOrderDeliverydateInfo } from '@/actions/ordersRequest';*/
+import { updateOrderDeliverydateInfo } from '@/actions/orderActions';
 /*import { signOut } from 'next-auth/react';*/
 import styles from './components.module.css';
 
@@ -23,12 +23,9 @@ const ChangeDeliveryDate = ({id, handleClose}) => {
 
     const onSubmit = async (formData) => {
         await schema.validate(formData)
-        const delivery_info = {
-            ...formData,
-        }
 
         try {
-            const response = await updateOrderDeliverydateInfo(delivery_info, id);
+            const response = await updateOrderDeliverydateInfo(formData, id);
             if(response.expired){
                 setTimeout(async () => {
                     handleClose();
@@ -59,25 +56,23 @@ const ChangeDeliveryDate = ({id, handleClose}) => {
 
     return (
         <form className={styles.updates_form} onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <div className={styles.datePicker_container}>
-                    <h4>Select Shipping Date</h4>
-                    <ReactDatePicker
-                        showIcon
-                        closeOnScroll={true}
-                        selected={watch('delivery_date')}
-                        onChange={handleDateChange}
-                        minDate={addBusinessDays(new Date(), 10)}
-                        maxDate={addDays(new Date(), 90)}
-                        filterDate={isWeekday}
-                        dateFormat="MM-dd-yyyy"
-                        className={styles.customDatePicker}
-                        placeholderText="Select a date"
-                    >
-                        <p className={styles.error_updating_info}>We recommend select the delivery day 3 days before the event</p> 
-                    </ReactDatePicker>
-                    {errors.delivery_date && <p className={styles.error_updating_info}>{errors.delivery_date.message}</p>}
-                </div>
+            <div className={styles.datePicker_container}>
+                <h4>Select Shipping Date</h4>
+                <ReactDatePicker
+                    showIcon
+                    closeOnScroll={true}
+                    selected={watch('delivery_date')}
+                    onChange={handleDateChange}
+                    minDate={addBusinessDays(new Date(), 10)}
+                    maxDate={addDays(new Date(), 90)}
+                    filterDate={isWeekday}
+                    dateFormat="MM-dd-yyyy"
+                    className={styles.customDatePicker}
+                    placeholderText="Select a date"
+                >
+                    <p className={styles.error_updating_info}>We recommend select the delivery day 3 days before the event</p> 
+                </ReactDatePicker>
+                {errors.delivery_date && <p className={styles.error_updating_info}>{errors.delivery_date.message}</p>}
             </div>  
             <div className={styles.buttons_container}>
                 <button type='submit' disabled={isSubmitting} className={styles.update_button}>Update</button>

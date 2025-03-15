@@ -14,7 +14,7 @@ export default async function ProductInformation({product}) {
                     <p><span>Updated:</span> {format(parseISO(product.updated_at), 'EE, MMMM d yyyy')}</p>
                     <p><span>Stock available:</span> {product.stock}</p>
                     <p><span>Sold units:</span> {product['sold units']}</p>
-                    <button type='button' className={styles.edit_button} >Add stock</button> 
+                    <MyModalUpdateProduct data={product} resourceType={'stock'}/>
                 </div>
                 <div className={styles.product_images_container}>
                     { product.images_urls.map((image, index) => {

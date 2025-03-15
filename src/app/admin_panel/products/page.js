@@ -3,6 +3,7 @@ import { fetchAllProducts } from "@/lib/fetchingRequests";
 import Pagination from "@/components/UI/Pagination";
 import { SearchForm } from "@/components/UI/SearchForm";
 import ProductsTable from "@/components/presentation/ProductsTable";
+import MyModalCreateProduct from "@/components/UI/MyModalCreateProduct";
 
 
 export default async function Products(props) {
@@ -30,6 +31,7 @@ export default async function Products(props) {
         </div>
       </div>
       <ProductsTable data={data}/>
+      <MyModalCreateProduct />
     </div>
   );
 }

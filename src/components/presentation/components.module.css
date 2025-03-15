@@ -1,13 +1,17 @@
 /*containers*/
-.orders_container, .customer_details_container, .order_info_container, .product_info_container{
+.orders_container, .customer_details_container, .order_info_container, .product_info_container, .cancel_order_container{
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+}
+
+.cancel_order_container{
+    flex-direction: row;
 }
 
 .cards_details_container, .product_info_subcontainer{
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-columns: 2fr 1fr 2fr;
     gap: 1rem;
     width: 100%;
 }

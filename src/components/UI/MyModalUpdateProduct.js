@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 import styles from './components.module.css'
 import ChangeProductInfo from '../forms/ChangeProductInfo'
 import ChangeProductDetails from '../forms/ChangeProductDetails'
+import ChangeStock from '../forms/ChangeStock'
 
 
 
@@ -32,6 +33,10 @@ const MyModalUpdateProduct = ({data, resourceType}) => {
                 {
                     resourceType === 'details' && 
                     <ChangeProductDetails  data={data} handleClose={()=> closeModal()}/>
+                }
+                {
+                    resourceType === 'stock' && 
+                    <ChangeStock  data={data} handleClose={()=> closeModal()}/>
                 }
             </Modal>
         </div>

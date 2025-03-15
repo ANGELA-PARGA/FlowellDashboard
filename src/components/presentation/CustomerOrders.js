@@ -17,6 +17,7 @@ export default async function CustomerOrders({orders}) {
                             <th>Updated</th>
                             <th>Status</th>
                             <th>Delivery Date</th>
+                            <th>Tracking #</th>
                             <th>Total</th>
                             <th>See details</th>
                         </tr>
@@ -29,6 +30,7 @@ export default async function CustomerOrders({orders}) {
                             <td>{format(parseISO(order.updated_at), 'EE, MMMM d yyyy')}</td>
                             <td>{order.status}</td>
                             <td>{format(parseISO(order.delivery_date), 'EE, MMMM d yyyy')}</td>
+                            <td>{order.tracking}</td>
                             <td>{order.total.toFixed(2)}</td>
                             <td><Link href={`/admin_panel/orders/${order.id}`}><button className={styles.see_details_button}>Details</button></Link></td>
                         </tr>

@@ -337,4 +337,75 @@ export async function fetchProductsBySearch(term, filters ={}){
     }
 }
 
+/*dashboard information */
+export async function fetchOrdersDashboardInfo(){
+    console.log('CALLING SERVER FETCH ORDERS DASHBOARD INFO')
+    /*const { cookieForServer, expired } = await cookieFetchVerification();
+
+    if (expired) {
+        console.log('Session expired on the backend. Triggering logout.');
+        return { expired: true };
+    }*/
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/dashboard`, /*{
+            headers : {cookie: cookieForServer}
+        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+
+        if (!response.ok) { 
+            if (response.status === 401 || response.status === 403) {
+                console.log('Session expired on the backend. Triggering logout.');
+                return { expired: true };
+            }      
+            const errorResponse = await response.json();
+            console.log(`getting orders dashboard info failed`, errorResponse);
+            throw new Error(`Error: ${errorResponse.status}, ${errorResponse.error}, statusCode: ${errorResponse?.customError.status}`);
+        } 
+
+        const responseObject = await response.json()
+        console.log('SERVER RESPONSE FETCH ORDERS DASHBOARD INFO:', responseObject)
+        return { data: responseObject, expired: false };
+    
+        
+    } catch (error) {
+        console.error('Network error:', error);
+        throw error;        
+    }
+}
+
+export async function fetchProductsDashboardInfo(){
+    console.log('CALLING SERVER FETCH PRODUCTS DASHBOARD INFO')
+    /*const { cookieForServer, expired } = await cookieFetchVerification();
+
+    if (expired) {
+        console.log('Session expired on the backend. Triggering logout.');
+        return { expired: true };
+    }*/
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/dashboard`, /*{
+            headers : {cookie: cookieForServer}
+        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+
+        if (!response.ok) { 
+            if (response.status === 401 || response.status === 403) {
+                console.log('Session expired on the backend. Triggering logout.');
+                return { expired: true };
+            }      
+            const errorResponse = await response.json();
+            console.log(`getting products dashboard info failed`, errorResponse);
+            throw new Error(`Error: ${errorResponse.status}, ${errorResponse.error}, statusCode: ${errorResponse?.customError.status}`);
+        } 
+
+        const responseObject = await response.json()
+        console.log('SERVER RESPONSE FETCH PRODUCTS DASHBOARD INFO:', responseObject)
+        return { data: responseObject, expired: false };
+    
+        
+    } catch (error) {
+        console.error('Network error:', error);
+        throw error;        
+    }
+}
+
 

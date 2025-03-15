@@ -2,6 +2,7 @@ import styles from "./components.module.css";
 import { format, parseISO } from "date-fns";
 import Link from "next/link";
 
+
 export default async function ProductsTable({data}) {
     return (
         <div className={styles.table_container}>

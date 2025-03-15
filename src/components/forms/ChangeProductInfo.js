@@ -1,6 +1,6 @@
 'use client'
 
-/*import { updateOrderShippingInfo } from '@/actions/ordersRequest';*/
+import { updateProductDetails } from '@/actions/productActions';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
@@ -10,26 +10,41 @@ import styles from './components.module.css';
 
 const schema = yup.object().shape({
     name: yup.string().typeError('the name must be text').required('The name is required'),
-    description: yup.string().typeError('the description must be text').required('The city is required').required('The description is required'),
+    description: yup.string().typeError('the description must be text').required('The description is required'),
     color: yup.string().typeError('the color must be text').required('The color is required'), 
-    category: yup.string().typeError('the category must be text').required('The category is required'), 
+    category_id: yup.number().typeError('the category must be a number').required('The category is required'), 
 });
 
 const ChangeProductInfo = ({data, handleClose}) => {
     const [updateError, setupdateError] = useState(); 
 
-    const { register, handleSubmit, formState: { errors, isSubmitting }, trigger} = useForm({
-        resolver: yupResolver(schema)
+    const { register, handleSubmit, formState: { errors, isSubmitting, isDirty, dirtyFields }, trigger} = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            name: data.name,
+            description: data.description,
+            color: data.color,
+            category: data.category,
+            category_id: data.category_id
+        }
     });
 
     const onSubmit = async (formData) => {
-        await schema.validate(formData)
-        console.log(formData)
-        const updated_product_info = {
-            ...formData,
-        }        
+        const updatedData = Object.keys(dirtyFields).reduce((acc, key) =>{
+            acc[key] = formData[key]
+            return acc            
+        }, {})
+
+        // ✅ If no fields were changed, prevent unnecessary update
+        if (!isDirty) { 
+            console.log('not changed')
+            handleClose();           
+            return;
+        }
+
+        await schema.validate(formData)        
         try {
-            const response = await updateOrderShippingInfo(updated_product_info, data.id)
+            const response = await updateProductDetails(updatedData, data.id)
             if(response.expired){
                 setTimeout(async () => {
                     handleClose();
@@ -41,7 +56,7 @@ const ChangeProductInfo = ({data, handleClose}) => {
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
-        }        
+        }       
     } 
 
     const handleOnCancel = (e) =>{
@@ -56,7 +71,7 @@ const ChangeProductInfo = ({data, handleClose}) => {
                     <label htmlFor="name">Enter the name of the product</label>
                     <p className={styles.error_updating_info}>{errors.name?.message}</p>
                 </div>
-                <input {...register('name')} type="text" name="name" id="name" defaultValue={data.name} onBlur={() => {
+                <input {...register('name')} type="text" name="name" id="name" onBlur={() => {
                     trigger('name'); 
                 }} />                
             </div>
@@ -66,15 +81,13 @@ const ChangeProductInfo = ({data, handleClose}) => {
                     <p className={styles.error_updating_info}>{errors.description?.message}</p>
                 </div>
                 <textarea 
-                    {...register('description')} 
-                    defaultValue={data.description} 
-                    onBlur={() => {
+                    {...register('description')} onBlur={() => {
                         trigger('description'); 
                     }}
                     id="description"
                     name="description"
-                    rows="10" // Controls height
-                    cols="60" // Optional: Controls width
+                    rows="10" 
+                    cols="60" 
                     placeholder="Enter a detailed description..."
                 />
             </div>
@@ -83,7 +96,7 @@ const ChangeProductInfo = ({data, handleClose}) => {
                     <label htmlFor="color">Choose the color of the product</label>
                     <p className={styles.error_updating_info}>{errors.color?.message}</p>
                 </div>
-                <select {...register("color")} defaultValue={data.color} onBlur={() => {
+                <select {...register("color")} onBlur={() => {
                         trigger('color'); 
                     }}>
                         <option value='white'>White</option>
@@ -91,6 +104,7 @@ const ChangeProductInfo = ({data, handleClose}) => {
                         <option value='red'>Red</option>
                         <option value='pink'>Pink</option>
                         <option value='light pink'>Light Pink</option>
+                        <option value='hot pink'>Hot Pink</option>
                         <option value='lavender'>Lavender</option>
                         <option value='orange'>Orange</option>
                         <option value='yellow'>Yellow</option>
@@ -102,16 +116,19 @@ const ChangeProductInfo = ({data, handleClose}) => {
                     <label htmlFor="category">Choose the category of the product</label>
                     <p className={styles.error_updating_info}>{errors.category?.message}</p>
                 </div>
-                <select {...register("category")} defaultValue={data.category} onBlur={() => {
-                    trigger('category'); 
+                <select {...register("category_id")} onBlur={() => {
+                    trigger('category_id'); 
                 }}>
-                    <option value='roses'>Roses</option>
-                    <option value='spray roses'>Spray Roses</option>
-                    <option value='greenery'>Greenery</option>
-                    <option value='hydrangeas'>Hydrangeas</option>
-                    <option value='gerberas'>Gerberas</option>
-                    <option value='sunflowers'>Sunflowers</option>
-                    <option value='carnations'>Carnations</option>
+                    <option value={1}>Roses</option>
+                    <option value={2}>Spray Roses</option>
+                    <option value={3}>Greenery</option>
+                    <option value={4}>Pompons</option>
+                    <option value={5}>Moms</option>
+                    <option value={6}>Sunflowers</option>
+                    <option value={7}>Tulips</option>
+                    <option value={8}>Alstroemerias</option>
+                    <option value={9}>Gerberas</option>
+                    <option value={10}>Hydrangeas</option>
                 </select>
             </div>                
             <div className={styles.buttons_container}>

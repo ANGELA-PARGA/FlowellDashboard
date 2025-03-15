@@ -1,6 +1,8 @@
 import styles from './components.module.css'
 import { format, parseISO } from "date-fns";
 import MyModalUpdateOrder from '../UI/MyModalUpdateOrder';
+import MyModalCancelOrder from '../UI/MyModalCancelOrder';
+import MyModalShipOrder from '../UI/MyModalShipOrder';
 
 export default async function OrderInformation({order}) {   
 
@@ -11,12 +13,15 @@ export default async function OrderInformation({order}) {
                     <h3>Order #{order.id}</h3>
                     <p><span>Created:</span> {format(parseISO(order.created_at), 'EE, MMMM d yyyy')}</p>
                     <p><span>Status:</span> {order.status}</p>
+                    <p><span>Tracking #:</span> {order.tracking}</p>
+                    <p><span>Customer:</span> {order.customer.first_name} {order.customer.last_name}</p>
+                    <p><span>Email account:</span> {order.customer.email}</p>
                 </div>
                 <div className={styles.cards_details}>
                     <h3>Delivery Date</h3>
                     <p><span>Delivery date:</span> {format(parseISO(order.delivery_date), 'EE, MMMM d yyyy')}</p>
                     {
-                        order.status === 'COMPLETED' || order.status === 'IN TRANSIT'?
+                        order.status === 'COMPLETED' || order.status === 'SHIPPED' || order.status === 'CANCELLED'?
                         <button type='button' disabled>Edit</button>: 
                         <MyModalUpdateOrder id={order.id} resourceType={'date'}/>                   
                     }           
@@ -29,7 +34,7 @@ export default async function OrderInformation({order}) {
                     <p>{order.shipping_info.zip_code}</p>
                     <p><span>Phone:</span> {order.shipping_info.phone}</p>
                     {
-                        order.status === 'COMPLETED' || order.status === 'IN TRANSIT' ?
+                        order.status === 'COMPLETED' || order.status === 'SHIPPED' || order.status === 'CANCELLED' ?
                         <button type='button' disabled>Edit</button>:
                         <MyModalUpdateOrder data={order} resourceType={'address'}/>
                     }          
@@ -46,7 +51,7 @@ export default async function OrderInformation({order}) {
                             <p><span>Price per case:</span> ${item.price}</p>
                             <p><span>Subtotal:</span> ${item.price * item.qty}</p>
                             {
-                                order.status === 'COMPLETED' || order.status === 'IN TRANSIT'?
+                                order.status === 'COMPLETED' || order.status === 'SHIPPED' || order.status === 'CANCELLED'?
                                 <button type='button' disabled >Edit</button>: 
                                 <MyModalUpdateOrder data={{id: order.id, item:item}} resourceType={'items'}/>                    
                             }
@@ -55,10 +60,16 @@ export default async function OrderInformation({order}) {
                     })}
                 </ul>
             </div>
-            <div>
-                <br />
+            <div className={styles.cancel_order_container}>
                 <h3>Total: ${order.total.toFixed(2)}</h3>
-                <br />
+                {
+                    order.status === 'COMPLETED' || order.status === 'SHIPPED' || order.status === 'CANCELLED' ?
+                    <p><span>This order was completed.</span></p>:
+                    <>
+                    <MyModalCancelOrder id={order.id} resourceType={'date'}/>  
+                    <MyModalShipOrder id={order.id}/>
+                    </>
+                }           
             </div>
         </section>
     );

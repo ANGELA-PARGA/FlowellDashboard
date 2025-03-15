@@ -56,7 +56,7 @@ a.secondary {
 
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
   .page {
     padding: 32px;
   }

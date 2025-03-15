@@ -14,6 +14,7 @@ export default async function OrdersTable({data}) {
                     <th>Total</th>
                     <th>Delivery date</th>
                     <th>Status</th>
+                    <th>Tracking #</th>
                     <th>Updated at</th>
                     <th>See details</th>
                 </tr>
@@ -26,6 +27,7 @@ export default async function OrdersTable({data}) {
                     <td>{order.total}</td>
                     <td>{format(parseISO(order.delivery_date), 'EE, MMM d yyyy')}</td>
                     <td>{order.status}</td>
+                    <td>{order.tracking}</td>
                     <td>{format(parseISO(order.updated_at), 'EE, MMM d yyyy')}</td>
                     <td><Link href={`/admin_panel/orders/${order.id}`}><button className={styles.see_details_button}>Details</button></Link></td>
                     </tr>
