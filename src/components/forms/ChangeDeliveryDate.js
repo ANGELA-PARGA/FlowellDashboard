@@ -63,7 +63,7 @@ const ChangeDeliveryDate = ({id, handleClose}) => {
                     closeOnScroll={true}
                     selected={watch('delivery_date')}
                     onChange={handleDateChange}
-                    minDate={addBusinessDays(new Date(), 10)}
+                    minDate={addBusinessDays(new Date(), 5)}
                     maxDate={addDays(new Date(), 90)}
                     filterDate={isWeekday}
                     dateFormat="MM-dd-yyyy"

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import styles from './components.module.css'
 import clsx from 'clsx';
 import { HomeIcon, UsersIcon, OrdersIcon, ProductsIcon, ReportsIcon, DashboardIcon} from "../../../public/svgIcons";
+import ButtonLogOut from '../UI/ButtonLogOut';
 import { usePathname } from 'next/navigation';
 
 const SidebarMenuPhone = () => {
@@ -19,6 +20,7 @@ const SidebarMenuPhone = () => {
                 <li className={clsx({[styles.active]: pathname === '/admin_panel/orders'})}><Link href={'/admin_panel/orders'}><OrdersIcon width={20} height={20} weight={2} /></Link></li>
                 <li className={clsx({[styles.active]: pathname === '/admin_panel/products'})}><Link href={'/admin_panel/products'}><ProductsIcon width={20} height={20} weight={2} /></Link></li>
                 <li className={clsx({[styles.active]: pathname === '/admin_panel/reports'})}><Link href={'/admin_panel/reports'}><ReportsIcon width={20} height={20} weight={2} /></Link></li>                
+                <ButtonLogOut/> 
             </ul>          
         </nav>
     )

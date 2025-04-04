@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 /*import { signOut } from 'next-auth/react';*/
 import styles from './components.module.css';
+import Image from 'next/image';
 
 const schema = yup.object().shape({
     name: yup.string().typeError('the name must be text').required('The name is required'),
@@ -14,26 +15,46 @@ const schema = yup.object().shape({
     color: yup.string().typeError('the color must be text').required('The color is required'), 
     category_id: yup.number().typeError('the category must be a number').required('The category is required'),
     stem_length_cm: yup.number().typeError('the stem length must be a number').required('The stem length is required').min(20, 'The min value allowed is 20 cm').max(60, 'The max value allowed is 60 cm'),
-    bloom_size_cm: yup.number().typeError('the bloom size must be a number').required('The bloom size is required').min(0.5, 'The min value allowed is 0.5 cm').max(15, 'The max value allowed is 15 cm'),
+    bloom_size_cm: yup.number().typeError('the bloom size must be a number').required('The bloom size is required').min(0.5, 'The min value allowed is 0.5 cm').max(25, 'The max value allowed is 25 cm'),
     blooms_per_stem: yup.number().typeError('the blooms per stem must be a number').required('The blooms per stem is required').min(1, 'The min value allowed is 1 bloom').max(20, 'The max value allowed is 20 blooms'), 
     life_in_days: yup.number().typeError('the life span must be a number').required('The life span is required').min(7, 'The min value allowed is 7 days').max(20, 'The max value allowed is 20 days'), 
     qty_per_case: yup.number().typeError('the qty per case must be a number').required('The qty per case is required').min(12, 'The min value allowed is 12 units').max(140, 'The max value allowed is 140 units'),  
     measure_per_case: yup.string().typeError('the measure per case must be text').required('The measure per case is required'), 
-    price_per_case: yup.number().typeError('the price per case must be a number').required('The price per case is required').min(20, 'The min value allowed is 20 dollars').max(200, 'The max value allowed is 200 dollars'),  
+    price_per_case: yup.number().typeError('the price per case must be a number').required('The price per case is required').min(20, 'The min value allowed is 20 dollars').max(200, 'The max value allowed is 200 dollars'),
+    stock_available: yup.number().typeError('the stock must be a number').min(0, 'Min 0 units').max(200, 'Max 200 units').required('The stock is required'),
+    // ✅ Image validation: Max 3 images, only JPG, PNG, or WebP, max 5MB each
+    images_url: yup
+        .mixed()
+        .test('required', 'You must upload at least 1 image', (files) => {
+            return Array.isArray(files) && files.length > 0;  // ✅ Ensure files is an array
+        })
+        .test('fileType', 'Only .jpg, .png, or .webp formats are allowed', (files) => {
+            return Array.isArray(files) && files.every(file => 
+                ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)
+            );
+        })
+        .test('fileSize', 'Each image must be less than 5MB', (files) => {
+            return Array.isArray(files) && files.every(file => file.size <= 5 * 1024 * 1024);
+        })
+        .test('maxFiles', 'You can upload a maximum of 3 images', (files) => {
+            return Array.isArray(files) && files.length <= 3;
+        })
+
 });
 
 const CreateNewProduct = ({handleClose}) => {
-    const [updateError, setupdateError] = useState(); 
+    const [updateError, setupdateError] = useState();
+    const [selectedImages, setSelectedImages] = useState([]);
 
-    const { register, handleSubmit, formState: { errors, isSubmitting }, trigger} = useForm({
+    const { register, handleSubmit, formState: { errors, isSubmitting}, trigger, setValue} = useForm({
         resolver: yupResolver(schema),
     });
 
     const onSubmit = async (formData) => {
-        console.log(formData)
+
         await schema.validate(formData)        
         try {
-            const response = await createNewProduct(formData)
+            const response = await createNewProduct(formData)  // ✅ Send images & form data
             if(response.expired){
                 setTimeout(async () => {
                     handleClose();
@@ -45,8 +66,20 @@ const CreateNewProduct = ({handleClose}) => {
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
-        }       
+        }     
     } 
+
+     // ✅ Handle image selection & preview
+    const handleImageChange = (event) => {
+        const files = Array.from(event.target.files);
+        console.log("Selected Files:", files);
+    
+        setSelectedImages(files.map(file => URL.createObjectURL(file)));  // ✅ Generate previews
+    
+        setValue('images_url', files, { shouldValidate: true, shouldDirty: true }); 
+        trigger('images_url');
+    };
+    
 
     const handleOnCancel = (e) =>{
         e.preventDefault();
@@ -54,7 +87,7 @@ const CreateNewProduct = ({handleClose}) => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.updates_form}>          
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.updates_form} encType='multipart/form-data'>          
             <div className={styles.input_container}>
                 <div className={styles.labels_container}>
                     <label htmlFor="name">Enter the name of the product</label>
@@ -98,6 +131,7 @@ const CreateNewProduct = ({handleClose}) => {
                         <option value='orange'>Orange</option>
                         <option value='yellow'>Yellow</option>
                         <option value='green'>Green</option>
+                        <option value='blue'>Blue</option>
                 </select>
             </div>
             <div className={styles.input_container}>
@@ -140,7 +174,7 @@ const CreateNewProduct = ({handleClose}) => {
                     <label htmlFor="bloom_size_cm">Enter the bloom size (cm) of the product</label>
                     <p className={styles.error_updating_info}>{errors.bloom_size_cm?.message}</p>
                 </div> 
-                <input {...register('bloom_size_cm')} type="number" step="0.5" name="bloom_size_cm" id="bloom_size_cm" min='0.5' max='15'
+                <input {...register('bloom_size_cm')} type="number" step="0.5" name="bloom_size_cm" id="bloom_size_cm" min='0.5' max='25'
                 onBlur={() => {
                     trigger('bloom_size_cm'); 
                 }} />                               
@@ -197,6 +231,42 @@ const CreateNewProduct = ({handleClose}) => {
                 onBlur={() => {
                     trigger('price_per_case'); 
                 }} />                        
+            </div>
+            <div className={styles.input_container}>
+                <div className={styles.labels_container}>
+                    <label htmlFor="stock_available">Insert the new stock quantity</label>
+                    <p className={styles.error_updating_info}>{errors.stock_available?.message}</p>
+                </div>
+                <input {...register('stock_available')} type="number" name="stock_available" id="stock_available" min={0} max={200}
+                onBlur={() => {
+                    trigger('stock_available'); 
+                }} />                     
+            </div>
+            <div className={styles.input_container}>
+                <div className={styles.labels_container}>
+                    <label htmlFor="images_url">Upload Images (Max 3, format jpg/png/webp, aspect-ratio 1:1)</label>
+                    <p className={styles.error_updating_info}>{errors.images_url?.message}</p>
+                </div>
+                <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageChange}
+                />
+            </div>
+            <div className={styles.url_preview_container}>
+                {selectedImages.map((image, index)=>{
+                    return(
+                        <Image 
+                            key={index}
+                            src={image}
+                            width={80}
+                            height={80}
+                            style={{ borderRadius: '15%' }}
+                            alt={'image selected using the input'} 
+                        />                       
+                    )
+                })}
             </div>                
             <div className={styles.buttons_container}>
                 <button type="submit" className={styles.update_button} disabled={isSubmitting}>Update</button>

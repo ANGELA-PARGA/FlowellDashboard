@@ -2,12 +2,12 @@ import { cookieFetchVerification } from "./cookieVerification";
 
 export async function fetchAllUsers(page, filters ={}){
     console.log('CALLING SERVER FETCH ALL USERS', page, filters)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     const query = new URLSearchParams({
         page,
@@ -15,9 +15,13 @@ export async function fetchAllUsers(page, filters ={}){
     });
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users?${query.toString()}`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users?${query.toString()}`, {
+            cache: 'force-cache', 
+            next: { tags: ['customers'], revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -42,17 +46,21 @@ export async function fetchAllUsers(page, filters ={}){
 
 export async function fetchUserInformation(id){
     console.log('CALLING SERVER FETCH USER INFORMATION', id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}/user_info`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}/user_info`, {
+            cache: 'force-cache', 
+            next: { revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -77,17 +85,21 @@ export async function fetchUserInformation(id){
 
 export async function fetchUserOrders(id){
     console.log('CALLING SERVER FETCH USER ORDERS HISTORY')
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}/orders_history`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}/orders_history`,{
+            cache: 'force-cache', 
+            next: { revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -112,12 +124,12 @@ export async function fetchUserOrders(id){
 
 export async function fetchAllOrders(page, filters ={}){
     console.log('CALLING SERVER FETCH ALL ORDERS', page, filters)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     const query = new URLSearchParams({
         page,
@@ -125,9 +137,13 @@ export async function fetchAllOrders(page, filters ={}){
     });
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders?${query.toString()}`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders?${query.toString()}`, {
+            cache: 'force-cache', 
+            next: { tags: ['orders'], revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -153,17 +169,22 @@ export async function fetchAllOrders(page, filters ={}){
 export async function fetchOrderById(id){
     console.log('CALLING SERVER FETCH ORDER INFO BY ID:', id)
     
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}`, /*{
-            headers : {cookie: cookieForServer}
-        } , { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}`, {
+            cache: 'force-cache', 
+            next: { revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
+
         if (!response.ok) {       
             if (response.status === 401 || response.status === 403) {
                 console.log('Session expired on the backend. Triggering logout.');
@@ -186,12 +207,12 @@ export async function fetchOrderById(id){
 
 export async function fetchAllProducts(page, filters ={}) {
     console.log('calling fetch all products:', page, filters)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     const query = new URLSearchParams({
         page,
@@ -199,9 +220,13 @@ export async function fetchAllProducts(page, filters ={}) {
     });
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products?${query.toString()}`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products?${query.toString()}`, {
+            cache: 'force-cache', 
+            next: { tags: ['products'], revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
@@ -225,17 +250,21 @@ export async function fetchAllProducts(page, filters ={}) {
 
 export async function fetchProductsById(id){
     console.log('calling fetch product by id:', id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
     
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${id}`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${id}`, {
+            cache: 'force-cache', 
+            next: { revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -260,12 +289,12 @@ export async function fetchProductsById(id){
 
 export async function fetchProductsByCategory(categoryId, page, filters ={}){
     console.log('calling fetch all products by category:', categoryId, page, filters)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     const query = new URLSearchParams({
         page,
@@ -273,9 +302,13 @@ export async function fetchProductsByCategory(categoryId, page, filters ={}){
     });
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/categories/${categoryId}?${query.toString()}`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/categories/${categoryId}?${query.toString()}`, {
+            cache: 'force-cache', 
+            next: { revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -301,21 +334,25 @@ export async function fetchProductsByCategory(categoryId, page, filters ={}){
 
 export async function fetchProductsBySearch(term, filters ={}){
     console.log(`calling fetch products by search`, term, filters);
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     const query = new URLSearchParams({
         ...filters,
     });
     
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/search?term=${term}&${query.toString()}`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/search?term=${term}&${query.toString()}`, {
+            cache: 'force-cache', 
+            next: { revalidate: 1800 },
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -340,17 +377,19 @@ export async function fetchProductsBySearch(term, filters ={}){
 /*dashboard information */
 export async function fetchOrdersDashboardInfo(){
     console.log('CALLING SERVER FETCH ORDERS DASHBOARD INFO')
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/dashboard`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/dashboard`, {
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
@@ -375,17 +414,19 @@ export async function fetchOrdersDashboardInfo(){
 
 export async function fetchProductsDashboardInfo(){
     console.log('CALLING SERVER FETCH PRODUCTS DASHBOARD INFO')
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/dashboard`, /*{
-            headers : {cookie: cookieForServer}
-        }, { cache: 'force-cache', next: { revalidate: 1800 }}*/)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/dashboard`, {
+            headers : {
+                cookie: cookieForServer
+            }
+        })
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {

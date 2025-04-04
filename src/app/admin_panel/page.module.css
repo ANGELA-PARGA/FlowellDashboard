@@ -31,16 +31,28 @@
 /*admin panel styles*/
 .admin_panel{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto;
     gap: 1.5rem;
+}
+
+@media (max-width: 1080px) {  
+    .admin_panel{
+        grid-template-columns: 1fr 1fr;
+    }  
+}
+
+@media (max-width: 780px) {
+    .admin_panel{
+        grid-template-columns: 1fr;
+    }  
 }
 
 @media (max-width: 650px) {
     .pagination_container{
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
+        gap: 1rem;
     }
     .dashboard_info{
         margin-left: 60px;

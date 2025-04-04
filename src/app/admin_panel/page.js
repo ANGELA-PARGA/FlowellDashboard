@@ -4,8 +4,16 @@ import ProductsChart from "@/components/dashboard/ProductsChart";
 import SalesPerMonth from "@/components/dashboard/SalesPerMonth";
 import { fetchOrdersDashboardInfo } from "@/lib/fetchingRequests";
 import { fetchProductsDashboardInfo } from "@/lib/fetchingRequests";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import MyModalLogin from "@/components/UI/MyModalLogin";
 
 export default async function AdminPanel() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return <MyModalLogin />;
+  }
+
   const [ordersResult, productsResult] = await Promise.all([
     fetchOrdersDashboardInfo(),
     fetchProductsDashboardInfo()
@@ -14,11 +22,9 @@ export default async function AdminPanel() {
   const { data: orders, expired: firstExpired } = ordersResult;
   const { data: products, expired: secondExpired } = productsResult;
 
-  console.log('orders result',orders)
-
   if (firstExpired || secondExpired) {
     console.log('data is expired on CUSTOMERS server component')
-    /*return <MyModalLogin />;*/
+    return <MyModalLogin />
   } 
 
   return (

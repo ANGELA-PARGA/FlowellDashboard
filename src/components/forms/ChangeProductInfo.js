@@ -109,6 +109,7 @@ const ChangeProductInfo = ({data, handleClose}) => {
                         <option value='orange'>Orange</option>
                         <option value='yellow'>Yellow</option>
                         <option value='green'>Green</option>
+                        <option value='blue'>Blue</option>
                 </select>
             </div>
             <div className={styles.input_container}>

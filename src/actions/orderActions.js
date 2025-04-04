@@ -5,12 +5,12 @@ import { revalidatePath } from "next/cache";
 
 export async function updateOrderShippingInfo(data, id){
     console.log('UPDATE ORDER SHIPPING INFO FETCH', data, id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
 
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}/shipping_info`, {
@@ -20,7 +20,7 @@ export async function updateOrderShippingInfo(data, id){
             }),
             headers : {
                 "Content-Type": "application/json",
-                /*cookie: cookieForServer*/
+                cookie: cookieForServer
             }
         })
 
@@ -36,7 +36,8 @@ export async function updateOrderShippingInfo(data, id){
 
         const responseObject = await response.json() 
         console.log('UPDATE ORDER SHIPPING INFORMATION RESULT:', responseObject)       
-        revalidatePath(`/admin_panel/orders`, "page")
+        revalidatePath(`/admin_panel/orders/${id}`)
+        revalidatePath(`/admin_panel/orders`)
         return responseObject; 
 
     } catch (error) {
@@ -47,12 +48,13 @@ export async function updateOrderShippingInfo(data, id){
 
 export async function updateOrderDeliverydateInfo(data, id){
     console.log('UPDATE ORDER DELIVERY DAY FETCH', data, id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
+
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}/delivery_date`, {
             method: 'PATCH',
@@ -61,7 +63,7 @@ export async function updateOrderDeliverydateInfo(data, id){
             }),
             headers : {
                 "Content-Type": "application/json",
-                /*cookie: cookieForServer*/
+                cookie: cookieForServer
             }
         })
 
@@ -77,7 +79,8 @@ export async function updateOrderDeliverydateInfo(data, id){
 
         const responseObject = await response.json()   
         console.log('UPDATE ORDER DELIVERY DATE RESPONSE:', responseObject)     
-        revalidatePath(`/admin_panel/orders`, "page")
+        revalidatePath(`/admin_panel/orders/${id}`)
+        revalidatePath(`/admin_panel/orders`)
         return responseObject; 
 
     } catch (error) {
@@ -88,12 +91,13 @@ export async function updateOrderDeliverydateInfo(data, id){
 
 export async function updateOrderedItems(data, id){
     console.log('UPDATE ORDERED ITEMS FETCH', data, id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
+
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}/items_ordered`, {
             method: 'PATCH',
@@ -102,7 +106,7 @@ export async function updateOrderedItems(data, id){
             }),
             headers : {
                 "Content-Type": "application/json",
-                /*cookie: cookieForServer*/
+                cookie: cookieForServer
             }
         })
 
@@ -118,7 +122,8 @@ export async function updateOrderedItems(data, id){
 
         const responseObject = await response.json()   
         console.log('UPDATE ORDERED ITEMS RESPONSE:', responseObject)     
-        revalidatePath(`/admin_panel/orders`, "page")
+        revalidatePath(`/admin_panel/orders/${id}`)
+        revalidatePath(`/admin_panel/orders`)
         return responseObject; 
 
     } catch (error) {
@@ -129,12 +134,12 @@ export async function updateOrderedItems(data, id){
 
 export async function shipOrder(data, id){
     console.log('SHIP ORDER FETCH', data, id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}/ship_order`, {
             method: 'PATCH',
@@ -143,7 +148,7 @@ export async function shipOrder(data, id){
             }),
             headers : {
                 "Content-Type": "application/json",
-                /*cookie: cookieForServer*/
+                cookie: cookieForServer
             }
         })
 
@@ -158,8 +163,9 @@ export async function shipOrder(data, id){
         } 
 
         const responseObject = await response.json()   
-        console.log('SHIP ORDER RESPONSE:', responseObject)     
-        revalidatePath(`/admin_panel/orders`, "page")
+        console.log('SHIP ORDER RESPONSE:', responseObject)  
+        revalidatePath(`/admin_panel/orders/${id}`)   
+        revalidatePath(`/admin_panel/orders`)
         return responseObject; 
 
     } catch (error) {
@@ -170,19 +176,20 @@ export async function shipOrder(data, id){
 
 export async function cancelOrder(id){
     console.log('CANCEL ORDER FETCH', id)
-    /*const { cookieForServer, expired } = await cookieFetchVerification();
+    const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
         console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
-    }*/
+    }
+
     try {
         console.log('cancel order fetch:', id)
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${id}`, {
             method: 'PATCH',
-            /*headers : {
+            headers : {
                 cookie: cookieForServer
-            }*/
+            }
         })
 
         if (!response.ok) {   
@@ -197,7 +204,8 @@ export async function cancelOrder(id){
 
         const responseObject = await response.json()
         console.log('CANCEL ORDER RESPONSE:', responseObject)
-        revalidatePath(`/admin_panel/orders`, "page")
+        revalidatePath(`/admin_panel/orders/${id}`)
+        revalidatePath(`/admin_panel/orders`)
         return responseObject;        
     } catch (error) {
         console.error('NETWORK ERROR CANCELING ORDER:', error);

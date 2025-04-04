@@ -24,7 +24,7 @@ const ProductsChart = ({products}) => {
     return (
         <section className={styles.card_details_container}>
             <div className={styles.chart_details}>
-                <h1>The 3 best-selling products</h1>
+                <h1>3 best-selling products</h1>
                 <p>⭐ {products[0].product_name}: <span>${products[0].total_revenue}</span></p>
             </div>
             <ResponsiveContainer width="100%" maxHeight={300}>

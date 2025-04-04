@@ -4,9 +4,17 @@ import Pagination from "@/components/UI/Pagination";
 import { SearchForm } from "@/components/UI/SearchForm";
 import ProductsTable from "@/components/presentation/ProductsTable";
 import MyModalCreateProduct from "@/components/UI/MyModalCreateProduct";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import MyModalLogin from "@/components/UI/MyModalLogin";
 
 export default async function Products(props) {
+  const session = await getServerSession(authOptions);
+
+    if (!session) {
+        return <MyModalLogin />
+    } 
+
   const searchParams = await props.searchParams;
   const page = Number(searchParams?.p) || 1;
   const term = searchParams?.term || '';
@@ -16,7 +24,7 @@ export default async function Products(props) {
 
   if (expired) {
     console.log('data is expired on CUSTOMERS server component')
-    /*return <MyModalLogin />;*/
+    return <MyModalLogin />
   }
 
   return (

@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from './components.module.css'
 
 export default async function CustomerOrders({orders}) {
+    console.log(orders)
     return (
         <div className={styles.orders_container}>
             { orders && orders.length > 0 ? (
@@ -14,7 +15,6 @@ export default async function CustomerOrders({orders}) {
                         <tr>
                             <th>Order #</th>
                             <th>Created</th>
-                            <th>Updated</th>
                             <th>Status</th>
                             <th>Delivery Date</th>
                             <th>Tracking #</th>
@@ -27,7 +27,6 @@ export default async function CustomerOrders({orders}) {
                         <tr key={order.id}>
                             <td>{order.id}</td>
                             <td>{format(parseISO(order.created_at), 'EE, MMMM d yyyy')}</td>
-                            <td>{format(parseISO(order.updated_at), 'EE, MMMM d yyyy')}</td>
                             <td>{order.status}</td>
                             <td>{format(parseISO(order.delivery_date), 'EE, MMMM d yyyy')}</td>
                             <td>{order.tracking}</td>

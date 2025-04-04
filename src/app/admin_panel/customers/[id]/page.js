@@ -3,11 +3,18 @@ import { fetchUserOrders } from "@/lib/fetchingRequests";
 import CustomerInfo from "@/components/presentation/CustomerInfo";
 import CustomerOrders from "@/components/presentation/CustomerOrders";
 import styles from '../../page.module.css'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 
 export default async function CustomerDetails(props) {
-    const params = await props.params;
+    const session = await getServerSession(authOptions);
 
+    if (!session) {
+        /*return <MyModalLogin />;*/
+    }
+
+    const params = await props.params;
     const[userInfoResults, userOrdersResults] = await Promise.all([
         fetchUserInformation(params.id),
         fetchUserOrders(params.id)

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import styles from './components.module.css'
 import clsx from 'clsx';
 import { HomeIcon, UsersIcon, OrdersIcon, ProductsIcon, ReportsIcon, DashboardIcon} from "../../../public/svgIcons";
+import ButtonLogOut from '../UI/ButtonLogOut';
 import { usePathname } from 'next/navigation';
 
 const SidebarMenu = () => {
@@ -20,7 +21,8 @@ const SidebarMenu = () => {
           <li className={clsx({[styles.active]: pathname === '/admin_panel/customers'})}><Link href={'/admin_panel/customers'}><UsersIcon width={20} height={20} weight={2} />Customers</Link></li>
           <li className={clsx({[styles.active]: pathname === '/admin_panel/orders'})}><Link href={'/admin_panel/orders'}><OrdersIcon width={20} height={20} weight={2} />Orders</Link></li>
           <li className={clsx({[styles.active]: pathname === '/admin_panel/products'})}><Link href={'/admin_panel/products'}><ProductsIcon width={20} height={20} weight={2} />Products</Link></li>
-          <li className={clsx({[styles.active]: pathname === '/admin_panel/reports'})}><Link href={'/admin_panel/reports'}><ReportsIcon width={20} height={20} weight={2} />Reports</Link></li>                
+          <li className={clsx({[styles.active]: pathname === '/admin_panel/reports'})}><Link href={'/admin_panel/reports'}><ReportsIcon width={20} height={20} weight={2} />Reports</Link></li> 
+          <ButtonLogOut/>               
         </ul>          
       </nav>
   )

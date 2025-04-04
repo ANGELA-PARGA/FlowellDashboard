@@ -42,8 +42,6 @@ li {
 button:disabled{
   cursor: not-allowed; 
   color: #fafafa;
-  width: 50px;   
-  padding: 0.15rem;
 }
 
 button:disabled:hover{

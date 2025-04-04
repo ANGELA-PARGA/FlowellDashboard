@@ -12,8 +12,8 @@ export default async function OrderInformation({order}) {
                 <div className={styles.cards_details}>
                     <h3>Order #{order.id}</h3>
                     <p><span>Created:</span> {format(parseISO(order.created_at), 'EE, MMMM d yyyy')}</p>
+                    <p><span>Updated:</span> {format(parseISO(order.updated_at), 'EE, MMMM d yyyy')}</p>
                     <p><span>Status:</span> {order.status}</p>
-                    <p><span>Tracking #:</span> {order.tracking}</p>
                     <p><span>Customer:</span> {order.customer.first_name} {order.customer.last_name}</p>
                     <p><span>Email account:</span> {order.customer.email}</p>
                 </div>
@@ -24,7 +24,8 @@ export default async function OrderInformation({order}) {
                         order.status === 'COMPLETED' || order.status === 'SHIPPED' || order.status === 'CANCELLED'?
                         <button type='button' disabled>Edit</button>: 
                         <MyModalUpdateOrder id={order.id} resourceType={'date'}/>                   
-                    }           
+                    } 
+                    <p><span>Tracking #:</span> {order.tracking}</p>          
                 </div>
                 <div className={styles.cards_details}>
                     <h3>Shipping Information</h3>
