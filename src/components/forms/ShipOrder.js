@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-/*import { signOut } from 'next-auth/react';*/
+import { forceLogOut } from '@/lib/forceLogout';
 import styles from './components.module.css';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
     tracking: yup.string().matches(/^\d{12}$/, "Tracking must be exactly 12 digits")
@@ -25,16 +26,16 @@ const ShipOrder = ({id, handleClose}) => {
         try {
             const response = await shipOrder(formData, id)
             if(response.expired){
-                setTimeout(async () => {
-                    handleClose();
-                    await signOut({ callbackUrl: '/login' });
-                }, 2000);
+                toast.error('Your session has expired, please login again')
+                await forceLogOut(handleClose)
             } else {
+                toast.success(`Order shipped succesfully`) 
                 handleClose() 
             } 
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
+            toast.error('Failed to ship the order, try again') 
         }       
     } 
 

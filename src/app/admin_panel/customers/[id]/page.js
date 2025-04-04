@@ -5,13 +5,14 @@ import CustomerOrders from "@/components/presentation/CustomerOrders";
 import styles from '../../page.module.css'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import MyModalLogin from "@/components/UI/MyModalLogin";
 
 
 export default async function CustomerDetails(props) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-        /*return <MyModalLogin />;*/
+        return <MyModalLogin />;
     }
 
     const params = await props.params;
@@ -22,14 +23,13 @@ export default async function CustomerDetails(props) {
 
     const {data: userInfo, expired: firstExpired} = userInfoResults;
     const {data: userOrders, expired: secondExpired} = userOrdersResults;
+
+    if (firstExpired || secondExpired) {
+        return <MyModalLogin />
+    } 
     
     const user = userInfo.user
     const orders = userOrders.orders
-
-    if (firstExpired || secondExpired) {
-        console.log('data is expired on CUSTOMERS server component')
-        /*return <MyModalLogin />;*/
-    }    
 
     return (
         <section className={styles.customer_details_container}>

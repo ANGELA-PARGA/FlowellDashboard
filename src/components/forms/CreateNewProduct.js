@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-/*import { signOut } from 'next-auth/react';*/
+import { forceLogOut } from '@/lib/forceLogout';
 import styles from './components.module.css';
+import { toast } from 'react-toastify';
 import Image from 'next/image';
 
 const schema = yup.object().shape({
@@ -56,16 +57,16 @@ const CreateNewProduct = ({handleClose}) => {
         try {
             const response = await createNewProduct(formData)  // ✅ Send images & form data
             if(response.expired){
-                setTimeout(async () => {
-                    handleClose();
-                    await signOut({ callbackUrl: '/login' });
-                }, 2000);
+                toast.error('Your session has expired, please login again')
+                await forceLogOut(handleClose)
             } else {
-                handleClose() 
+                handleClose()
+                toast.success(`New product created succesfully`)  
             } 
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
+            toast.error('Failed to create the new product, try again') 
         }     
     } 
 

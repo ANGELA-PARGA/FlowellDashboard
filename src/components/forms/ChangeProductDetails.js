@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-/*import { signOut } from 'next-auth/react';*/
 import styles from './components.module.css';
+import { forceLogOut } from '@/lib/forceLogout';
+import { toast } from 'react-toastify';
 
 
 const schema = yup.object().shape({
@@ -43,7 +44,6 @@ const ChangeProductDetails = ({data, handleClose}) => {
 
         // ✅ If no fields were changed, prevent unnecessary update
         if (!isDirty) { 
-            console.log('not changed')
             handleClose();           
             return;
         }
@@ -52,16 +52,16 @@ const ChangeProductDetails = ({data, handleClose}) => {
         try {
             const response = await updateProductDetails(updatedData, data.id)
             if(response.expired){
-                setTimeout(async () => {
-                    handleClose();
-                    await signOut({ callbackUrl: '/login' });
-                }, 2000);
+                toast.error('Your session has expired, please login again')
+                await forceLogOut(handleClose)
             } else {
+                toast.success(`Product details updated succesfully`) 
                 handleClose() 
             } 
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
+            toast.error('Failed to updated the product details, try again') 
         }     
     } 
 

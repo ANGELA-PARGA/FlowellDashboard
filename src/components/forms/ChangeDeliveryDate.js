@@ -8,8 +8,9 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; 
 import { addDays, addBusinessDays, getDay} from 'date-fns';
 import { updateOrderDeliverydateInfo } from '@/actions/orderActions';
-/*import { signOut } from 'next-auth/react';*/
+import { forceLogOut } from '@/lib/forceLogout';
 import styles from './components.module.css';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({   
     delivery_date: yup.date().required('Please select a delivery date').nullable(),
@@ -27,16 +28,16 @@ const ChangeDeliveryDate = ({id, handleClose}) => {
         try {
             const response = await updateOrderDeliverydateInfo(formData, id);
             if(response.expired){
-                setTimeout(async () => {
-                    handleClose();
-                    await signOut({ callbackUrl: '/login' });
-                }, 2000);
+                toast.error('Your session has expired, please login again')
+                await forceLogOut(handleClose)
             } else {
                 handleClose()
+                toast.success(`Delivery date updated succesfully`) 
             }   
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
+            toast.error('Failed to update the delivery date, try again') 
         }        
     }
 

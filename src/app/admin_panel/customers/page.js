@@ -18,13 +18,13 @@ export default async function Customers(props) {
   const page = Number(searchParams?.p) || 1;
   const term = searchParams?.term || '';
   const {data, expired} = await fetchAllUsers(page, { term });
-  const pages = data.pagination.totalPages
-  const totalUsers = data.pagination.totalUsers
 
   if (expired) {
-    console.log('data is expired on CUSTOMERS server component')
     return <MyModalLogin />
   }
+
+  const pages = data.pagination.totalPages
+  const totalUsers = data.pagination.totalUsers
   
   return (
     <div className={styles.customers_container}>

@@ -13,13 +13,11 @@ export default async function ProductDetails(props) {
     
     const params = await props.params;
     const {data, expired} = await fetchProductsById(params.id);
-    const product = data.product_found
 
     if (expired) {
-        console.log('data is expired on CUSTOMERS server component')
         return <MyModalLogin />
     } 
-
+    const product = data.product_found
     return (
         <ProductInformation product={product}/>
     );

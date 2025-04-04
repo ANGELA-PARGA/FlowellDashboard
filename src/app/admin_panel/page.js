@@ -23,7 +23,6 @@ export default async function AdminPanel() {
   const { data: products, expired: secondExpired } = productsResult;
 
   if (firstExpired || secondExpired) {
-    console.log('data is expired on CUSTOMERS server component')
     return <MyModalLogin />
   } 
 

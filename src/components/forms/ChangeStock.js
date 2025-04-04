@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-/*import { signOut } from 'next-auth/react';*/
+import { forceLogOut } from '@/lib/forceLogout';
 import styles from './components.module.css';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
     stock: yup.number().typeError('the stock must be a number').min(0, 'Min 0 units').max(200, 'Max 200 units')
@@ -24,7 +25,6 @@ const ChangeStock = ({data, handleClose}) => {
     const onSubmit = async (formData) => {
         // ✅ If no fields were changed, prevent unnecessary update
         if (!isDirty) { 
-            console.log('not changed')
             handleClose();           
             return;
         }
@@ -33,16 +33,16 @@ const ChangeStock = ({data, handleClose}) => {
         try {
             const response = await updateStock(formData, data.id)
             if(response.expired){
-                setTimeout(async () => {
-                    handleClose();
-                    await signOut({ callbackUrl: '/login' });
-                }, 2000);
+                toast.error('Your session has expired, please login again')
+                await forceLogOut(handleClose)
             } else {
+                toast.success(`Product stock updated succesfully`) 
                 handleClose() 
             } 
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
+            toast.error('Failed to updated the product stock, try again') 
         }      
     } 
 

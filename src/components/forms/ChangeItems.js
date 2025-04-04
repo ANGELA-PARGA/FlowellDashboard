@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-/*import { signOut } from 'next-auth/react';*/
+import { forceLogOut } from '@/lib/forceLogout';
 import styles from './components.module.css';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
     qty: yup.number().typeError("qty must be a number").required('The qty is required').min(0, "qty must be 0 or more").max(20, 'qty must be less than 20'), 
@@ -24,7 +25,6 @@ const ChangeItemsInfo = ({data, handleClose}) => {
 
         // ✅ If no fields were changed, prevent unnecessary update
         if (!isDirty) { 
-            console.log('not changed')
             handleClose();           
             return;
         }
@@ -39,16 +39,16 @@ const ChangeItemsInfo = ({data, handleClose}) => {
         try {
             const response = await updateOrderedItems(new_quantities, data.id)
             if(response.expired){
-                setTimeout(async () => {
-                    handleClose();
-                    await signOut({ callbackUrl: '/login' });
-                }, 2000);
+                toast.error('Your session has expired, please login again')
+                await forceLogOut(handleClose)
             } else {
+                toast.success(`Ordered items updated succesfully`)
                 handleClose() 
             } 
         } catch (error) {
             console.log(error)
             setupdateError(error.message)
+            toast.error('Failed to updated the items quantities, try again') 
         }      
     } 
 

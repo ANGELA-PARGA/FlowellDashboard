@@ -18,13 +18,14 @@ export default async function Orders(props) {
   const page = Number(searchParams?.p) || 1;
   const term = searchParams?.term || '';
   const {data, expired} = await fetchAllOrders(page, { term });
-  const pages = data.pagination.totalPages
-  const totalOrders = data.pagination.totalOrders
   
   if (expired) {
-    console.log('data is expired on ORDERS server component')
     return <MyModalLogin />
   }
+
+  const pages = data.pagination.totalPages
+  const totalOrders = data.pagination.totalOrders
+
 
   return (
     <div className={styles.orders_container}>

@@ -4,11 +4,9 @@ import { cookieFetchVerification } from "@/lib/cookieVerification";
 import { revalidatePath } from "next/cache";
 
 export async function updateProductDetails(data, id){
-    console.log('UPDATE PRODUCT DETAILS FETCH', data, id)
     const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
-        console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
     }
 
@@ -26,16 +24,14 @@ export async function updateProductDetails(data, id){
 
         if (!response.ok) {  
             if (response.status === 401 || response.status === 403) {
-                console.log('Session expired on the backend. Triggering logout.');
+                console.error('Session expired on the backend. Triggering logout.');
                 return { expired: true };
             }     
             const errorResponse = await response.json();
-            console.log(`UPDATING PRODUCT DETAILS FAILED`, errorResponse);
             throw new Error(`Error: ${errorResponse.status}, ${errorResponse.error}, statusCode: ${errorResponse?.customError.status}`);
         } 
 
-        const responseObject = await response.json() 
-        console.log('UPDATE PRODUCT DETAILS RESULT:', responseObject)       
+        const responseObject = await response.json()      
         revalidatePath(`/admin_panel/products/${id}`)
         revalidatePath(`/admin_panel/products`)
         return responseObject; 
@@ -47,11 +43,9 @@ export async function updateProductDetails(data, id){
 }
 
 export async function updateStock(data, id){
-    console.log('UPDATE PRODUCT STOCK FETCH', data, id)
     const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
-        console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
     }
     try {
@@ -68,16 +62,14 @@ export async function updateStock(data, id){
 
         if (!response.ok) { 
             if (response.status === 401 || response.status === 403) {
-                console.log('Session expired on the backend. Triggering logout.');
+                console.error('Session expired on the backend. Triggering logout.');
                 return { expired: true };
             }      
             const errorResponse = await response.json();
-            console.log(`UPDATING PRODUCT STOCK FAILED`, errorResponse);
             throw new Error(`Error: ${errorResponse.status}, ${errorResponse.error}, statusCode: ${errorResponse?.customError.status}`);
         } 
 
-        const responseObject = await response.json()   
-        console.log('UPDATE PRODUCT STOCK RESPONSE:', responseObject)     
+        const responseObject = await response.json()        
         revalidatePath(`/admin_panel/products/${id}`)
         revalidatePath(`/admin_panel/products`)
         return responseObject; 
@@ -89,7 +81,6 @@ export async function updateStock(data, id){
 }
 
 export async function createNewProduct(data){
-    console.log('CREATE PRODUCT FETCH', data)
     const formData = new FormData(); // ✅ Create FormData object to multipart forms
 
     // ✅ Append all text fields
@@ -109,7 +100,6 @@ export async function createNewProduct(data){
     const { cookieForServer, expired } = await cookieFetchVerification();
 
     if (expired) {
-        console.log('Session expired on the backend. Triggering logout.');
         return { expired: true };
     }
 
@@ -124,16 +114,14 @@ export async function createNewProduct(data){
 
         if (!response.ok) {  
             if (response.status === 401 || response.status === 403) {
-                console.log('Session expired on the backend. Triggering logout.');
+                console.error('Session expired on the backend. Triggering logout.');
                 return { expired: true };
             }     
             const errorResponse = await response.json();
-            console.log(`CREATE PRODUCT FAILED`, errorResponse);
             throw new Error(`Error: ${errorResponse.status}, ${errorResponse.error}, statusCode: ${errorResponse?.customError.status}`);
         } 
 
-        const responseObject = await response.json() 
-        console.log('CREATE PRODUCT RESULT:', responseObject)       
+        const responseObject = await response.json()        
         revalidatePath(`/admin_panel/products`)
         return responseObject;
 
