@@ -9,8 +9,8 @@ export default function ButtonLogOutModal({ handleClose }) {
 
     const onClickLogOut = async () => {        
         try {
-            await handleLogOut();
             await signOut({ redirect: false });
+            await handleLogOut();            
             handleClose();
             window.location.href = '/';
         } catch (error) {

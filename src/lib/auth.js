@@ -34,7 +34,6 @@ export const authOptions = {
                         const userRetrieved = await response.json();
                         
                         /*setting the cookie manually to the browser*/
-                        console.log('HEADERS', response.headers)
                         
                         const apiCookies = (await response.headers).get('Set-Cookie');
                         const cookieParts = apiCookies.split(';');
@@ -91,14 +90,12 @@ export const authOptions = {
                 token.email = user.email;
                 token.username = user.username;
             }
-            console.log("🟢 JWT Token Created:", token);
             return token;
         },
         async session({ session, token }) {
             session.user.id = token.id;
             session.user.email = token.email;
             session.user.username = token.username;
-            console.log("🟢 Session Created:", session); 
             return session;
         }
     },

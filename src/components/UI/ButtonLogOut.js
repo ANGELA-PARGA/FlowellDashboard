@@ -8,8 +8,8 @@ import { signOut } from "next-auth/react";
 export default function ButtonLogOut(){
 
     const onClickLogOut = async () => {
-        await handleLogOut();
         await signOut({ redirect: false });
+        await handleLogOut();       
         window.location.href = '/';
     }
 
